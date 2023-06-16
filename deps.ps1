@@ -14,50 +14,48 @@ Write-Host "Installing PowerShell Modules..." -ForegroundColor "Yellow"
 Install-Module Posh-Git -Scope CurrentUser -Force
 Install-Module PSWindowsUpdate -Scope CurrentUser -Force
 
+# Setup scoop
+irm get.scoop.sh | iex
+
+
+# Enable Hyper-V (for WSL)
+Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -NoRestart
+
+# Install from ms store
+winget install --accept-package-agreements --accept-source-agreements --source msstore "Windows Subsystem for Linux" --id 9P9TQF7MRM4R
+winget install --accept-package-agreements --source msstore "Ubuntu 20.04 LTS" --id 9N6SVWS3RX71
 
 # system and cli
-winget install Microsoft.WebPICmd                        --silent --accept-package-agreements
 winget install Git.Git                                   --silent --accept-package-agreements --override "/VerySilent /NoRestart /o:PathOption=CmdTools /Components=""icons,assoc,assoc_sh,gitlfs"""
-winget install OpenJS.NodeJS                             --silent --accept-package-agreements
 winget install Python.Python.3                           --silent --accept-package-agreements
-winget install RubyInstallerTeam.Ruby                    --silent --accept-package-agreements
 
 # browsers
 winget install Google.Chrome                             --silent --accept-package-agreements
-winget install Mozilla.Firefox                           --silent --accept-package-agreements
-winget install Opera.Opera                               --silent --accept-package-agreements
+
 
 # dev tools and frameworks
 winget install Microsoft.PowerShell                      --silent --accept-package-agreements
 winget install Microsoft.SQLServer.2019.Developer        --silent --accept-package-agreements
 winget install Microsoft.SQLServerManagementStudio       --silent --accept-package-agreements
 winget install Microsoft.VisualStudio.2022.Professional  --silent --accept-package-agreements --override "--wait --quiet --norestart --nocache --addProductLang En-us --add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.NetWeb"
-winget install JetBrains.dotUltimate                     --silent --accept-package-agreements --override "/SpecificProductNames=ReSharper;dotTrace;dotCover /Silent=True /VsVersion=17.0"
-winget install Vim.Vim                                   --silent --accept-package-agreements
-winget install WinMerge.WinMerge                         --silent --accept-package-agreements
-winget install Microsoft.AzureCLI                        --silent --accept-package-agreements
-winget install Microsoft.AzureStorageExplorer            --silent --accept-package-agreements
-winget install Microsoft.AzureStorageEmulator            --silent --accept-package-agreements
-#winget install Microsoft.ServiceFabricRuntime            --silent --accept-package-agreements
-#winget install Microsoft.ServiceFabricExplorer           --silent --accept-package-agreements
+winget install Neovim.Neovim                             --silent --accept-package-agreements
+winget install -e --id TablePlus.TablePlus -v 4.8.3
+winget install -e --id Microsoft.VisualStudioCode
+winget install --accept-package-agreements --accept-source-agreements --source msstore "Windows Subsystem for Linux" --id 9P9TQF7MRM4R
+winget install --accept-package-agreements --source msstore "Ubuntu 20.04 LTS" --id 9N6SVWS3RX71
+
+# Other
+winget install --accept-package-agreements --source winget "1Password" --id "AgileBits.1Password"
+winget install --accept-package-agreements --source msstore "Spotify Music" --id 9NCBCSZSJRSB
+winget install --accept-package-agreements --source msstore "Microsoft PowerToys" --id XP89DCGQ3K6VLD
+winget install --accept-package-agreements --source msstore "AutoHotkey Store Edition" --id 9NQ8Q8J78637
 
 Refresh-Environment
 
-gem pristine --all --env-shebang
 
 ### Node Packages
 Write-Host "Installing Node Packages..." -ForegroundColor "Yellow"
 if (which npm) {
     npm update npm
-    npm install -g yo
+    npm install -g @vue/cli
 }
-
-### Janus for vim
-Write-Host "Installing Janus..." -ForegroundColor "Yellow"
-if ((which curl) -and (which vim) -and (which rake) -and (which bash)) {
-    curl.exe -L https://bit.ly/janus-bootstrap | bash
-
-    cd ~/.vim/
-    git submodule update --remote
-}
-
