@@ -13,6 +13,8 @@ if (!(Verify-Elevated)) {
 Write-Host "Installing PowerShell Modules..." -ForegroundColor "Yellow"
 Install-Module Posh-Git -Scope CurrentUser -Force
 Install-Module PSWindowsUpdate -Scope CurrentUser -Force
+Install-Module Get-ChildItemColor -Scope CurrentUser -Force
+Install-Module PSFzf -Scope CurrentUser -Force
 
 # Setup scoop
 irm get.scoop.sh | iex
@@ -28,6 +30,8 @@ winget install --accept-package-agreements --source msstore "Ubuntu 20.04 LTS" -
 # system and cli
 winget install Git.Git                                   --silent --accept-package-agreements --override "/VerySilent /NoRestart /o:PathOption=CmdTools /Components=""icons,assoc,assoc_sh,gitlfs"""
 winget install Python.Python.3                           --silent --accept-package-agreements
+winget install dotnet-sdk-6 
+winget install dotnet-sdk-5
 
 # browsers
 winget install Google.Chrome                             --silent --accept-package-agreements
@@ -41,8 +45,7 @@ winget install Microsoft.VisualStudio.2022.Professional  --silent --accept-packa
 winget install Neovim.Neovim                             --silent --accept-package-agreements
 winget install -e --id TablePlus.TablePlus -v 4.8.3
 winget install -e --id Microsoft.VisualStudioCode
-winget install --accept-package-agreements --accept-source-agreements --source msstore "Windows Subsystem for Linux" --id 9P9TQF7MRM4R
-winget install --accept-package-agreements --source msstore "Ubuntu 20.04 LTS" --id 9N6SVWS3RX71
+
 
 # Other
 winget install --accept-package-agreements --source winget "1Password" --id "AgileBits.1Password"
