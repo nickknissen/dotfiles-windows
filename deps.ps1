@@ -1,6 +1,17 @@
 # Check to see if we are currently running "as Administrator"
 if (!(Verify-Elevated)) {
-   $newProcess = new-object System.Diagnostics.ProcessStartInfo "PowerShell";
+    #irm get.scoop.sh | iex
+
+    scoop bucket add php
+    scoop bucket add extras
+    
+    scoop install php/php8.1
+    scoop install php/php8.2
+    scoop install php-xdebug
+    scoop install composer
+    
+
+   $newProcess = new-object System.Diagnostics.ProcessStartInfo "pwsh.exe";
    $newProcess.Arguments = $myInvocation.MyCommand.Definition;
    $newProcess.Verb = "runas";
    [System.Diagnostics.Process]::Start($newProcess);
@@ -15,9 +26,7 @@ Install-Module Posh-Git -Scope CurrentUser -Force
 Install-Module PSWindowsUpdate -Scope CurrentUser -Force
 Install-Module Get-ChildItemColor -Scope CurrentUser -Force
 Install-Module PSFzf -Scope CurrentUser -Force
-
-# Setup scoop
-irm get.scoop.sh | iex
+Install-Module z -Scope CurrentUser -Force
 
 
 # Enable Hyper-V (for WSL)
@@ -43,11 +52,15 @@ winget install Microsoft.SQLServer.2019.Developer        --silent --accept-packa
 winget install Microsoft.SQLServerManagementStudio       --silent --accept-package-agreements
 winget install Microsoft.VisualStudio.2022.Professional  --silent --accept-package-agreements --override "--wait --quiet --norestart --nocache --addProductLang En-us --add Microsoft.VisualStudio.Workload.Azure --add Microsoft.VisualStudio.Workload.NetWeb"
 winget install Neovim.Neovim                             --silent --accept-package-agreements
-winget install -e --id TablePlus.TablePlus -v 4.8.3
-winget install -e --id Microsoft.VisualStudioCode
+winget install -e --id TablePlus.TablePlus -v 4.8.3 --silent --accept-package-agreements
+winget install -e --id Microsoft.VisualStudioCode --silent --accept-package-agreements
+winget install -e --id CoreyButler.NVMforWindows --silent --accept-package-agreements
 
+winget install -e --id Oracle.MySQL --silent --accept-package-agreements
 
 # Other
+
+winget install --accept-package-agreements --source winget "1Password" --id "AgileBits.1Password.CLI"
 winget install --accept-package-agreements --source winget "1Password" --id "AgileBits.1Password"
 winget install --accept-package-agreements --source msstore "Spotify Music" --id 9NCBCSZSJRSB
 winget install --accept-package-agreements --source msstore "Microsoft PowerToys" --id XP89DCGQ3K6VLD

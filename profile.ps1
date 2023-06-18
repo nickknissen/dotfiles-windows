@@ -20,3 +20,4 @@ Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadlineOption -BellStyle None
 
 Import-Module Get-ChildItemColor
+Import-Module Z
